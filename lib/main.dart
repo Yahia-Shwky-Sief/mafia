@@ -14,6 +14,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mafia Game',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.black,
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+        ),
+        colorScheme: ColorScheme(
+          brightness: Brightness.dark,
+          primary: Colors.red,
+          onPrimary: Colors.white,
+          secondary: Colors.redAccent,
+          onSecondary: Colors.white,
+          error: Colors.red,
+          onError: Colors.white,
+          surface: Colors.grey[900]!,
+          onSurface: Colors.white,
+        ),
+      ),
       home: Home(),
     );
   }
