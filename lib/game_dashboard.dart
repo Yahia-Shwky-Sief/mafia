@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:mafia/player_info.dart';
 
 /// A player's assigned info for this round.
 class PlayerCard {
@@ -20,12 +21,7 @@ class GameDashboardScreen extends StatefulWidget {
   const GameDashboardScreen({
     super.key,
     required this.playerNames,
-    this.roles = const [
-      'Mafia',
-      'Doctor',
-      'Detective',
-      'Villager',
-    ],
+    this.roles = const ['Mafia', 'Doctor', 'Detective', 'Villager'],
   });
 
   @override
@@ -34,6 +30,9 @@ class GameDashboardScreen extends StatefulWidget {
 
 class _GameDashboardScreenState extends State<GameDashboardScreen> {
   late List<PlayerCard> _players;
+  late int numberOfMafia;
+  late int numberOfDoctors;
+  late int numberOfDetectives;
 
   @override
   void initState() {
@@ -43,11 +42,57 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
 
   List<PlayerCard> _generatePlayers() {
     final random = Random();
+
+    if (widget.playerNames.length == 6) {
+      numberOfMafia = 1;
+      numberOfDoctors = 1;
+      numberOfDetectives = 1;
+    } else if (widget.playerNames.length >= 7 &&
+        widget.playerNames.length <= 10) {
+      numberOfMafia = 2;
+      numberOfDoctors = 1;
+      numberOfDetectives = 1;
+    } else if (widget.playerNames.length >= 11 &&
+        widget.playerNames.length <= 15) {
+      numberOfMafia = 4;
+      numberOfDoctors = 1;
+      numberOfDetectives = 2;
+    } else {
+      numberOfMafia = 5;
+      numberOfDoctors = 2;
+      numberOfDetectives = 2;
+    }
     return widget.playerNames.map((name) {
-      final role = widget.roles[random.nextInt(widget.roles.length)];
-      final number = random.nextInt(99) + 1; // 1 to 99
-      return PlayerCard(name: name, role: role, number: number);
+      /// randomly assign roles based on the number of each role left to assign and assign random number from 1 to 99
+
+      return PlayerCard(
+        name: name,
+        role: _assignRole(),
+        number: random.nextInt(99) + 1,
+      );
     }).toList();
+  }
+
+  String _assignRole() {
+    String assignedRole = '';
+    while (assignedRole == '') {
+      final random = Random().nextInt(widget.roles.length);
+      final role = widget.roles[random];
+
+      if (role == 'Mafia' && numberOfMafia > 0) {
+        assignedRole = 'Mafia';
+        numberOfMafia--;
+      } else if (role == 'Doctor' && numberOfDoctors > 0) {
+        assignedRole = 'Doctor';
+        numberOfDoctors--;
+      } else if (role == 'Detective' && numberOfDetectives > 0) {
+        assignedRole = 'Detective';
+        numberOfDetectives--;
+      } else if (role == 'Villager') {
+        assignedRole = 'Villager';
+      }
+    }
+    return assignedRole;
   }
 
   Color _roleColor(String role) {
@@ -65,9 +110,7 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Game dashboard'),
-      ),
+      appBar: AppBar(title: const Text('Game dashboard')),
       body: SafeArea(
         child: GridView.builder(
           padding: const EdgeInsets.all(16),
@@ -76,19 +119,31 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
             crossAxisCount: 3,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
+            mainAxisExtent: 140,
           ),
           itemCount: _players.length,
           itemBuilder: (context, index) {
             final player = _players[index];
             final color = _roleColor(player.role);
 
-            return Container(
-              width: 100,
-              height: 200,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.08),
-                borderRadius: .circular(16),
-                border: .all(color: color.withValues(alpha: 0.3)),
+            return MaterialButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PlayerInfo(
+                      name: player.name,
+                      role: player.role,
+                      number: player.number,
+                    ),
+                  ),
+                );
+              },
+              minWidth: 100,
+              color: color.withValues(alpha: 0.08),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: color.withValues(alpha: 0.3), width: 1),
               ),
               padding: .all(14),
               child: Column(
@@ -106,10 +161,7 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
                   ),
                   const SizedBox(height: 4),
                   Container(
-                    padding: .symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
+                    padding: .symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: color,
                       borderRadius: .circular(20),

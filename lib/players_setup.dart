@@ -38,7 +38,17 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Set up players')),
+      appBar: AppBar(
+        title: const Text('Set up players'),
+        actions: [
+          //! This button is for testing purposes only. It fills the text fields with sample names.
+          IconButton(onPressed: () {
+            for (var controller in _controllers) {
+              controller.text = 'yahia ${_controllers.indexOf(controller) + 1}';
+            }
+          }, icon: const Icon(Icons.type_specimen)),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -63,10 +73,9 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withValues(alpha: 0.12),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -135,7 +144,8 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
                         .toList();
                     // Use the collected names, e.g. pass them to the next screen.
                     MaterialPageRoute route = MaterialPageRoute(
-                      builder: (context) => GameDashboardScreen(playerNames: names),
+                      builder: (context) =>
+                          GameDashboardScreen(playerNames: names),
                     );
                     Navigator.push(context, route);
                   },
