@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PlayerInfo extends StatelessWidget {
-  const PlayerInfo({super.key, required this.name, required this.role, required this.number});
+  const PlayerInfo({required this.name, required this.role, required this.number, super.key});
 
   final String name;
   final String role;
@@ -17,8 +17,8 @@ class PlayerInfo extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Player Info Screen'),
-            SizedBox(height: 16),
+            const Text('Player Info Screen'),
+            const SizedBox(height: 16),
             Text('Name: $name'),
             Text('Role: $role'),
             Text('Number: $number'),

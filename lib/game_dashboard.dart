@@ -19,8 +19,7 @@ class GameDashboardScreen extends StatefulWidget {
   final List<String> roles;
 
   const GameDashboardScreen({
-    super.key,
-    required this.playerNames,
+    required this.playerNames, super.key,
     this.roles = const ['Mafia', 'Doctor', 'Detective', 'Villager'],
   });
 
@@ -74,7 +73,7 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
   }
 
   String _assignRole() {
-    String assignedRole = '';
+    var assignedRole = '';
     while (assignedRole == '') {
       final random = Random().nextInt(widget.roles.length);
       final role = widget.roles[random];
@@ -127,10 +126,10 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
             final color = _roleColor(player.role);
 
             return MaterialButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<void>(
                     builder: (context) => PlayerInfo(
                       name: player.name,
                       role: player.role,
@@ -143,9 +142,9 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
               color: color.withValues(alpha: 0.08),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: color.withValues(alpha: 0.3), width: 1),
+                side: BorderSide(color: color.withValues(alpha: 0.3)),
               ),
-              padding: .all(14),
+              padding: const .all(14),
               child: Column(
                 mainAxisSize: .min,
                 mainAxisAlignment: .center,
@@ -161,7 +160,7 @@ class _GameDashboardScreenState extends State<GameDashboardScreen> {
                   ),
                   const SizedBox(height: 4),
                   Container(
-                    padding: .symmetric(horizontal: 10, vertical: 4),
+                    padding: const .symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: color,
                       borderRadius: .circular(20),

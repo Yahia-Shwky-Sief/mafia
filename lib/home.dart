@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mafia/players_setup.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +11,7 @@ class _HomeState extends State<Home> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Image.asset(
                 'assets/images/main_poster.png',
                 width: 300,
@@ -25,7 +20,7 @@ class _HomeState extends State<Home> {
               ),
               ElevatedButton(
                 onPressed: () {
-                 MaterialPageRoute route = MaterialPageRoute(
+                 var route = MaterialPageRoute(
                     builder: (context) => const PlayersSetupScreen(),
                   );
                   Navigator.push(context, route);

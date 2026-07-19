@@ -1,0 +1,14 @@
+{
+    "customFileOrder.rules": {
+        "d:\\proggramming\\flutter\\projects\\small\\mafia\\lib": {
+            "order": [
+                "main.dart",
+                "home.dart",
+                "players_setup.dart",
+                "game_dashboard.dart",
+                "player_info.dart"
+            ],
+            "type": "manual"
+        }
+    }
+}

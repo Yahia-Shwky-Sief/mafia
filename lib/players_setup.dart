@@ -43,7 +43,7 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
         actions: [
           //! This button is for testing purposes only. It fills the text fields with sample names.
           IconButton(onPressed: () {
-            for (var controller in _controllers) {
+            for (final controller in _controllers) {
               controller.text = 'yahia ${_controllers.indexOf(controller) + 1}';
             }
           }, icon: const Icon(Icons.type_specimen)),
@@ -98,9 +98,9 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
                     onChanged: _onSliderChanged,
                     activeColor: Theme.of(context).colorScheme.primary,
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('6', style: TextStyle(color: Colors.grey)),
                       Text('20', style: TextStyle(color: Colors.grey)),
                     ],
@@ -143,7 +143,7 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
                         .map((c) => c.text.trim())
                         .toList();
                     // Use the collected names, e.g. pass them to the next screen.
-                    MaterialPageRoute route = MaterialPageRoute(
+                    var route = MaterialPageRoute(
                       builder: (context) =>
                           GameDashboardScreen(playerNames: names),
                     );
