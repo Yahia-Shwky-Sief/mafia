@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mafia/game_dashboard.dart';
+import 'package:mafia/transition_animation_logic.dart';
 
 class PlayersSetupScreen extends StatefulWidget {
   const PlayersSetupScreen({super.key});
@@ -42,11 +43,15 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
         title: const Text('Set up players'),
         actions: [
           //! This button is for testing purposes only. It fills the text fields with sample names.
-          IconButton(onPressed: () {
-            for (final controller in _controllers) {
-              controller.text = 'yahia ${_controllers.indexOf(controller) + 1}';
-            }
-          }, icon: const Icon(Icons.type_specimen)),
+          IconButton(
+            onPressed: () {
+              for (final controller in _controllers) {
+                controller.text =
+                    'yahia ${_controllers.indexOf(controller) + 1}';
+              }
+            },
+            icon: const Icon(Icons.type_specimen),
+          ),
         ],
       ),
       body: SafeArea(
@@ -137,17 +142,17 @@ class _PlayersSetupScreenState extends State<PlayersSetupScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: MaterialButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final names = _controllers
                         .take(_playerCount)
                         .map((c) => c.text.trim())
                         .toList();
-                    // Use the collected names, e.g. pass them to the next screen.
-                    var route = MaterialPageRoute(
-                      builder: (context) =>
-                          GameDashboardScreen(playerNames: names),
+
+                    await Navigator.of(
+                      context,
+                    ).push(
+                      createRoute(GameDashboardScreen(playerNames: names)),
                     );
-                    Navigator.push(context, route);
                   },
                   child: const Text('Continue'),
                 ),
